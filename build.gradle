@@ -1,0 +1,199 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id 'application'
+    id 'jacoco'
+}
+
+dependencies {
+    implementation 'org.javatuples:javatuples:1.2'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation 'com.opencsv:opencsv:5.4'
+    implementation 'joda-time:joda-time:2.10.10'
+    implementation 'org.optaplanner:optaplanner-core:8.8.0.Final'
+    implementation 'com.google.guava:guava:30.1.1-jre'
+    implementation 'javax.mail:mail:1.4.7'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.26'
+
+    testImplementation 'org.junit.platform:junit-platform-console-standalone:1.8.0-M1'
+    testImplementation 'com.pholser:junit-quickcheck-core:1.0'
+    testImplementation 'com.pholser:junit-quickcheck-generators:1.0'
+    testImplementation 'com.pholser:junit-quickcheck-guava:1.0'
+    testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.6.1'
+    testImplementation 'com.jparams:to-string-verifier:1.4.8'
+    testImplementation 'org.optaplanner:optaplanner-test:8.8.0.Final'
+
+    // all of these are just to ensure quickcheck works
+    testImplementation 'org.antlr:antlr-runtime:3.5'
+    testImplementation 'ru.vyarus:generics-resolver:3.0.3'
+    testImplementation 'org.javaruntype:javaruntype:1.3'
+    testImplementation 'ognl:ognl:3.0.12'
+    testImplementation 'org.slf4j:slf4j-api:1.7.31'
+}
+
+
+// note by declaring Maven first, it is checked before jcenter (latter just for clover)
+// https://docs.gradle.org/current/userguide/declaring_repositories.html#sec:declaring_multiple_repositories
+repositories {
+    mavenCentral()
+}
+
+task getRunTimeDeps(type: Copy) {
+  from configurations.runtimeClasspath
+  into 'lib/'
+}
+
+task getTestTimeDeps(type: Copy) {
+  from configurations.testRuntimeClasspath
+  into 'lib/'
+}
+
+task deleteRedundantPackages(type: Delete) {
+    dependsOn getRunTimeDeps
+    dependsOn getTestTimeDeps
+    delete files("${projectDir}/lib/jakarta.activation-1.2.2.jar")
+    delete files("${projectDir}/lib/slf4j-api-1.7.30.jar")
+
+    delete files("${projectDir}/lib/HdrHistogram-2.1.12.jar")
+    delete files("${projectDir}/lib/LatencyUtils-2.0.3.jar")
+    delete files("${projectDir}/lib/checker-qual-3.8.0.jar")
+    // don't delete these ones, they're needed
+    //// delete files("${projectDir}/lib/commons-beanutils-1.9.4.jar")
+    //delete files("${projectDir}/lib/commons-codec-1.11.jar")
+    //delete files("${projectDir}/lib/commons-collections-3.2.2.jar")
+    //// delete files("${projectDir}/lib/commons-lang3-3.12.0.jar")
+    //delete files("${projectDir}/lib/commons-logging-1.2.jar")
+    //delete files("${projectDir}/lib/commons-math3-3.6.1.jar")
+    //delete files("${projectDir}/lib/commons-text-1.9.jar")
+    delete files("${projectDir}/lib/drools-alphanetwork-compiler-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/drools-canonical-model-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/drools-compiler-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/drools-core-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/drools-core-dynamic-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/drools-core-reflective-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/drools-ecj-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/drools-model-compiler-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/drools-mvel-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/drools-mvel-compiler-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/drools-mvel-parser-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/error_prone_annotations-2.5.1.jar")
+    delete files("${projectDir}/lib/failureaccess-1.0.1.jar")
+    delete files("${projectDir}/lib/hamcrest-core-1.3.jar")
+    delete files("${projectDir}/lib/istack-commons-runtime-3.0.11.jar")
+    delete files("${projectDir}/lib/j2objc-annotations-1.3.jar")
+    delete files("${projectDir}/lib/jakarta.activation-api-1.2.2.jar")
+    delete files("${projectDir}/lib/jakarta.xml.bind-api-2.3.3.jar")
+    delete files("${projectDir}/lib/javaparser-core-3.13.10.jar")
+    delete files("${projectDir}/lib/javassist-3.20.0-GA.jar")
+    delete files("${projectDir}/lib/jaxb-runtime-2.3.3.jar")
+    delete files("${projectDir}/lib/jsr305-3.0.2.jar")
+    delete files("${projectDir}/lib/junit-4.13.1.jar")
+    delete files("${projectDir}/lib/kie-api-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/kie-internal-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/kie-memory-compiler-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/kie-soup-commons-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/kie-soup-maven-support-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/kie-soup-project-datamodel-api-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/kie-soup-project-datamodel-commons-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/kie-soup-xstream-7.55.0.Final.jar")
+    delete files("${projectDir}/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar")
+    delete files("${projectDir}/lib/micrometer-core-1.6.6.jar")
+    delete files("${projectDir}/lib/mvel2-2.4.12.Final.jar")
+    delete files("${projectDir}/lib/mxparser-1.2.1.jar")
+    delete files("${projectDir}/lib/txw2-2.3.3.jar")
+    delete files("${projectDir}/lib/xmlpull-1.1.3.1.jar")
+    delete files("${projectDir}/lib/xstream-1.4.16.jar")
+}
+
+// getDeps is for VSCode (not needed for tests)
+task getDeps {
+    dependsOn getRunTimeDeps
+    dependsOn getTestTimeDeps
+    dependsOn deleteRedundantPackages
+}
+
+test {
+    //testLogging.showStandardStreams = true  // uncomment this if want to see output when test
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport // report is always generated after tests run
+    ignoreFailures = true
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+}
+
+group 'employeeschedulingsystem'
+
+apply plugin: 'java'
+
+sourceSets.test.java.srcDirs = ['src']
+sourceSets.test.java.excludes = ['employeeschedulingsystem/*']
+sourceSets.main.java.srcDirs = ['src']
+sourceSets.main.java.excludes = ['tests/*']
+
+ext {
+   javaMainClass = "employeeschedulingsystem.EmployeeSchedulingSystem"
+   inputPath = null
+}
+
+// gradle run
+application {
+    mainClassName = javaMainClass
+}
+
+// can also run a custom directory such as: gradle run --args="/mnt/c/Users/12345/Desktop/folder_of_CSVs"
+
+// https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/TaskContainer.html#register-java.lang.String-
+// avoid immediate configuration so can set the CSV path to run with
+tasks.register("runExampleTask", Exec){ runExampleTask ->
+    test.enabled = false
+    jacocoTestReport.enabled = false
+    getDeps.enabled = false
+    getRunTimeDeps.enabled = false
+    getTestTimeDeps.enabled = false
+    deleteRedundantPackages.enabled = false
+    dependsOn build
+    group = "Execution"
+    description = "Run the main class with example1 with ExecTask"
+    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), javaMainClass, project.ext.inputPath
+}
+
+tasks.register("runExample1"){ runExample1 ->
+    project.ext.inputPath = "CSVs_command_line/example1_significant_working_example"
+    dependsOn runExampleTask
+}
+
+tasks.register("runExample2"){ runExample2 ->
+    project.ext.inputPath = "CSVs_command_line/example2_impossible_example"
+    dependsOn runExampleTask
+}
+
+tasks.register("runExample3"){ runExample3 ->
+    project.ext.inputPath = "CSVs_command_line/example3_trivial_working_example"
+    dependsOn runExampleTask
+}
+
+tasks.register("runExample4"){ runExample4 ->
+    project.ext.inputPath = "CSVs_command_line/example4_simple_working_example"
+    dependsOn runExampleTask
+}
+
+tasks.register("runExample5"){ runExample5 ->
+    project.ext.inputPath = "CSVs_command_line/example5_simpler_working_example"
+    dependsOn runExampleTask
+}
+
+tasks.register("runExample6"){ runExample6 ->
+    project.ext.inputPath = "CSVs_command_line/example6_even_simpler_working_example"
+    dependsOn runExampleTask
+}
+
+tasks.register("runExample7"){ runExample7 ->
+    project.ext.inputPath = "CSVs_command_line/example7_complex_example"
+    dependsOn runExampleTask
+}

@@ -1,0 +1,18 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    // NOTE - we turn assertions on to help debugging, although they shouldn't be used in production code
+    "version": "0.2.0",
+    "cwd": "${workspaceRoot}",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch EmployeeSchedulingSystem",
+            "request": "launch",
+            "vmArgs": "--module-path ./lib -enableassertions",
+            "mainClass": "employeeschedulingsystem.EmployeeSchedulingSystem",
+            "args": "CSVs_command_line\\example5_simpler_working_example"
+        }
+    ]
+}

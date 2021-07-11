@@ -1,0 +1,139 @@
+buildscript {
+    repositories {
+        // jcenter lower priority than maven
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies{
+        // clover
+        classpath 'com.bmuschko:gradle-clover-plugin:3.0.1'
+    }
+}
+
+plugins{
+    id 'application'
+}
+
+apply plugin: 'com.bmuschko.clover'
+
+dependencies {
+    implementation 'org.javatuples:javatuples:1.2'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation 'com.opencsv:opencsv:5.4'
+    implementation 'joda-time:joda-time:2.10.10'
+    implementation 'org.optaplanner:optaplanner-core:8.8.0.Final'
+    implementation 'com.google.guava:guava:30.1.1-jre'
+    implementation 'javax.mail:mail:1.4.7'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.26'
+
+    testImplementation 'org.junit.platform:junit-platform-console-standalone:1.8.0-M1'
+    testImplementation 'com.pholser:junit-quickcheck-core:1.0'
+    testImplementation 'com.pholser:junit-quickcheck-generators:1.0'
+    testImplementation 'com.pholser:junit-quickcheck-guava:1.0'
+    testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.6.1'
+    testImplementation 'com.jparams:to-string-verifier:1.4.8'
+    testImplementation 'org.optaplanner:optaplanner-test:8.8.0.Final'
+
+    // all of these are just to ensure quickcheck works
+    testImplementation 'org.antlr:antlr-runtime:3.5'
+    testImplementation 'ru.vyarus:generics-resolver:3.0.3'
+    testImplementation 'org.javaruntype:javaruntype:1.3'
+    testImplementation 'ognl:ognl:3.0.12'
+    testImplementation 'org.slf4j:slf4j-api:1.7.31'
+
+    // clover
+    clover 'org.openclover:clover:4.4.1'
+    clover 'org.javatuples:javatuples:1.2'
+    clover 'org.apache.commons:commons-collections4:4.4'
+    clover 'com.opencsv:opencsv:5.4'
+    clover 'joda-time:joda-time:2.10.10'
+    clover 'org.optaplanner:optaplanner-core:8.8.0.Final'
+    clover 'com.google.guava:guava:30.1.1-jre'
+    clover 'javax.mail:mail:1.4.7'
+    clover 'com.googlecode.libphonenumber:libphonenumber:8.12.26'
+    clover 'org.junit.platform:junit-platform-console-standalone:1.8.0-M1'
+    clover 'com.pholser:junit-quickcheck-core:1.0'
+    clover 'com.pholser:junit-quickcheck-generators:1.0'
+    clover 'com.pholser:junit-quickcheck-guava:1.0'
+    clover 'nl.jqno.equalsverifier:equalsverifier:3.6.1'
+    clover 'com.jparams:to-string-verifier:1.4.8'
+    clover 'org.optaplanner:optaplanner-test:8.8.0.Final'
+    clover 'org.antlr:antlr-runtime:3.5'
+    clover 'ru.vyarus:generics-resolver:3.0.3'
+    clover 'org.javaruntype:javaruntype:1.3'
+    clover 'ognl:ognl:3.0.12'
+    clover 'org.slf4j:slf4j-api:1.7.31'
+}
+
+
+// note by declaring Maven first, it is checked before jcenter (latter just for clover)
+// https://docs.gradle.org/current/userguide/declaring_repositories.html#sec:declaring_multiple_repositories
+repositories {
+    mavenCentral()
+}
+
+test{
+    // need to exclude these garbage classes, will cause failed test (and they don't need to be tested)
+    //testLogging.showStandardStreams = true  // uncomment this if want to see output when test
+    exclude "**/*__CLR4_4_*"
+    useJUnitPlatform()
+    ignoreFailures = true
+}
+
+group 'employeeschedulingsystem'
+
+sourceSets.test.java.srcDirs = ['src']
+sourceSets.test.java.excludes = ['employeeschedulingsystem/*']
+sourceSets.main.java.srcDirs = ['src']
+sourceSets.main.java.excludes = ['tests/*']
+
+// run with: gradle cloverGenerateReport -b test_clover.gradle
+task clover {
+    // pretends to be Java 9, which is the most recent version of Java supported
+    compiler {
+        sourceCompatibility = '1.9'
+        targetCompatibility = '1.9'
+    }
+    
+    // ensure don't get coverage on test files
+    includes = ['**/employeeschedulingsystem/*.java']
+    testIncludes = ['**/tests/*Test.java']
+
+    // contexts cant be included due to the plugin not being updated for gradle 7 (but would like this to be included if possible)
+    //contexts {
+    //    method {
+    //        name = 'main'
+    //        regexp = 'public static void main\\(String args\\[\\]\\).*'
+    //    }
+    //}
+
+    report {
+        html = true
+        pdf = true
+        xml = true
+        //filter = 'main'
+
+        // Support capturing test results from JUnix XML report
+        testResultsDir = project.tasks.getByName('test').reports.junitXml.destination
+        testResultsInclude = 'TEST-*.xml'
+
+        // Support controlling current-report for OpenClover
+        alwaysReport = false
+        includeFailedTestCoverage = false
+        numThreads = 2
+
+        // Clover report nested columns support
+        columns {
+            coveredMethods format: '%'
+            coveredBranches format: '%'
+            coveredStatements format: 'longbar'
+            totalPercentageCovered format: '%', scope: 'package'
+        }
+    }
+}
+
+
+
+
+

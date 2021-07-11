@@ -1,0 +1,3 @@
+employeeId,name,mobile,email,importance,maxWeeklyShifts,minWeeklyShifts
+employee1234567,Homer,+61411999700,Homer@fakeemail7632456745321345678654321345.com,13,5,1
+employee1234580,Krusty,+61411999713,Krusty@fakeemail7632456745321345678654321345.com,5,,

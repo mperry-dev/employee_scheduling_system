@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solver>
+  <!-- Domain model configuration -->
+  <scanAnnotatedClasses/>
+
+  <!--https://stackoverflow.com/questions/36049363/problems-with-the-solver-configuration-for-two-planning-entity-classes-->
+  <solutionClass>employeeschedulingsystem.Allocations</solutionClass>
+  <entityClass>employeeschedulingsystem.Shift</entityClass>
+  <scoreDirectorFactory>
+    <constraintProviderClass>employeeschedulingsystem.AllocationsConstraintProvider</constraintProviderClass>
+  </scoreDirectorFactory>
+
+  <!-- Optimization algorithms configuration -->
+  <termination>
+    <unimprovedSecondsSpentLimit>15</unimprovedSecondsSpentLimit>
+  </termination>
+</solver>

@@ -1,0 +1,7 @@
+*.class
+*.log
+/bin/
+/lib/
+/build/
+/.gradle/
+/CSVs_command_line/
