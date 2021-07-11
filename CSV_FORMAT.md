@@ -18,10 +18,10 @@ The fields are as follows:
 * `employeeId`: the unique business identifier of the employee. This field is required, and must be unique, otherwise the system will reject the CSV file and terminate.
 * `name`: the name of the employee. It is optional to include this.
 * `mobile`: the mobile number of the employee. This must follow international format, including country code, e.g. `+61481500997`. The system will reject the input CSV file and terminate if it contains an invalid mobile number. It is optional to include this.
-* `email`: the email of the employee. If this is not a valid email format, the system will reject the CSV file and terminate. It is optional to include this.
+* `email`: the email of the employee. This field is required, and must be a valid email format, otherwise the system will reject the CSV file and terminate.
 * `importance`: the importance of the employee. Including this is optional. A higher importance will result in the employee being prioritized for shifts, whilst not including it will result in the employee having 0 importance.
 * `maxWeeklyShifts`: the maximum number of weekly shifts the employee is allowed to have. Including this is optional. If this is not included, the employee will have no upper bound on the number of weekly shifts allowed. If included, adhering to this maximum is a hard constraint of the system.
-* `minWeeklyShifts`: the minimum number of weekly shifts the employee prefers to have. Including this is optional. If this is not included, the employee will be assigned a minimum weekly shifts preference of 0 shifts. Adhering to this minimum is not a hard constraint of the system - the system will try to satisfy the preferred minimum weekly shifts of all employees, but it is not required to.
+* `minWeeklyShifts`: the minimum number of weekly shifts the employee prefers to have. Including this is optional. If this is not included, the employee will be assigned a minimum weekly shifts preference of 0 shifts. Adhering to this minimum is not a hard constraint of the system - the system will try to satisfy the preferred minimum weekly shifts of all employees, with preference for those of higher importance, but it is not required to.
 
 ## 2. employee_availability.csv
 
@@ -36,7 +36,7 @@ employee1234580,in-person,12/07/2021 8:00,19/07/2021 9:00
 ```
 
 The fields are as follows:
-* `employeeId`: this should match an employeeId in the file `employee_information.csv`. If it does not, the availability will not be considered by the system. This field is required - if it is not included, the system will reject the input CSV file and terminate.
+* `employeeId`: this should match an employeeId in the file `employee_information.csv`. If it does not, the system will reject the input CSV file and terminate. This field is required - if it is not included, the system will reject the input CSV file and terminate.
 * `type`: this is the shift type the employee is willing to do during this availability, such as an online shift or in-person shift. This is used to match against the type field of a shift from `shift_information.csv`. This is optional - if not included, the employee will be considered for all types of shift by the system. If it is included, adhering to the type requirement of the employee is a hard constraint of the system.
 * `start`: this is the start time of the availability, as a date and time combination. It must be in the pattern `d/MM/yyyy H:mm` (i.e. `day/month/year hour:minute`), with 24-hour time, such as `30/01/2020 22:40`. This is a required field - if it is not included, the system will reject the input CSV file and terminate.
 * `end`: this is the end time of the availability, as a date and time combination. It must be in the pattern `d/MM/yyyy H:mm` (i.e. `day/month/year hour:minute`), with 24-hour time, such as `30/01/2020 22:40`. This is a required field - if it is not included, the system will reject the input CSV file and terminate.
