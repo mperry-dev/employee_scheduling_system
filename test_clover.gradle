@@ -81,12 +81,12 @@ test{
     ignoreFailures = true
 }
 
-group 'employeeschedulingsystem'
+group 'com.roster123.employeescheduler'
 
 sourceSets.test.java.srcDirs = ['src']
-sourceSets.test.java.excludes = ['employeeschedulingsystem/*']
+sourceSets.test.java.excludes = ['main/*']
 sourceSets.main.java.srcDirs = ['src']
-sourceSets.main.java.excludes = ['tests/*']
+sourceSets.main.java.excludes = ['test/*']
 
 // run with: gradle cloverGenerateReport -b test_clover.gradle
 task clover {
@@ -97,8 +97,8 @@ task clover {
     }
     
     // ensure don't get coverage on test files
-    includes = ['**/employeeschedulingsystem/*.java']
-    testIncludes = ['**/tests/*Test.java']
+    includes = ['**/main/**/*.java']
+    testIncludes = ['**/test/**/*Test.java']
 
     // contexts cant be included due to the plugin not being updated for gradle 7 (but would like this to be included if possible)
     //contexts {

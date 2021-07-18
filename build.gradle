@@ -127,17 +127,17 @@ jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
 }
 
-group 'employeeschedulingsystem'
+group 'com.roster123.employeescheduler'
 
 apply plugin: 'java'
 
 sourceSets.test.java.srcDirs = ['src']
-sourceSets.test.java.excludes = ['employeeschedulingsystem/*']
+sourceSets.test.java.excludes = ['main/*']
 sourceSets.main.java.srcDirs = ['src']
-sourceSets.main.java.excludes = ['tests/*']
+sourceSets.main.java.excludes = ['test/*']
 
 ext {
-   javaMainClass = "employeeschedulingsystem.EmployeeSchedulingSystem"
+   javaMainClass = "com.roster123.employeescheduler.EmployeeSchedulingSystem"
    inputPath = null
 }
 
