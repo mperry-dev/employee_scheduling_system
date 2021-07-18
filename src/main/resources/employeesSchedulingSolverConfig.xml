@@ -4,10 +4,10 @@
   <scanAnnotatedClasses/>
 
   <!--https://stackoverflow.com/questions/36049363/problems-with-the-solver-configuration-for-two-planning-entity-classes-->
-  <solutionClass>employeeschedulingsystem.Allocations</solutionClass>
-  <entityClass>employeeschedulingsystem.Shift</entityClass>
+  <solutionClass>com.roster123.employeescheduler.domain.Allocations</solutionClass>
+  <entityClass>com.roster123.employeescheduler.domain.Shift</entityClass>
   <scoreDirectorFactory>
-    <constraintProviderClass>employeeschedulingsystem.AllocationsConstraintProvider</constraintProviderClass>
+    <constraintProviderClass>com.roster123.employeescheduler.solver.AllocationsConstraintProvider</constraintProviderClass>
   </scoreDirectorFactory>
 
   <!-- Optimization algorithms configuration -->
