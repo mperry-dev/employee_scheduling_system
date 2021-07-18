@@ -11,7 +11,7 @@
             "name": "Launch EmployeeSchedulingSystem",
             "request": "launch",
             "vmArgs": "--module-path ./lib -enableassertions",
-            "mainClass": "employeeschedulingsystem.EmployeeSchedulingSystem",
+            "mainClass": "com.roster123.employeescheduler.EmployeeSchedulingSystem",
             "args": "CSVs_command_line\\example5_simpler_working_example"
         }
     ]

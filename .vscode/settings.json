@@ -2,6 +2,10 @@
     "java.import.gradle.enabled": false,
     "java.import.gradle.wrapper.enabled": false,
     "java.project.sourcePaths": [
-        "src"
+        "src/test/java",
+        "src/main/java"
+    ],
+    "java.project.referencedLibraries": [
+        "lib/*.jar",
     ]
 }
