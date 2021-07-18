@@ -96,6 +96,8 @@ Navigate to the root directory of the project (containing the `build.gradle` fil
 
 This step isn't necessary to run or test the project via the command line - it is useful for some IDEs such as `VSCode`, to be able to run the project from within the IDE.
 
+You might have to run it multiple times for it to work - on Windows it is sometimes unable to delete the redundant dependencies the first time it is run.
+
 ### 2.4 Configuring Time Spent Finding a Solution
 
 In the file [`employeesSchedulingSolverConfig.xml`](src/main/resources/employeesSchedulingSolverConfig.xml), change the number in the tag `<unimprovedSecondsSpentLimit>10</unimprovedSecondsSpentLimit>` to the number of seconds you wish the constraint solver to keep looking for a solution whilst it hasn't made any improvements to the score.
@@ -110,4 +112,16 @@ Please note that all of the currently failing tests are examples of emails/inter
 
 It is best to examine coverage levels using `Clover`, because `Jacoco` often doesn't detect coverage on lines with exceptions.
 
-Currently the level of coverage is fairly high at 90.4% statement coverage (the exception to this is some methods in the [`EmployeeSchedulingSystem`](src/employeeschedulingsystem/EmployeeSchedulingSystem.java) class, such as to load a file from an absolute path). However, there are still edge-cases left to write `JUnit` tests for, such as for different combinations of user-input errors being made simultaneously. More testing is needed for complex methods such as `Employee.addAvailabilities` and `Employee.availabilitiesFullyCoveringShiftTime` in the [`Employee`](src/employeeschedulingsystem/Employee.java) class, and for the constraints in [`AllocationsConstraintProvider`](src/employeeschedulingsystem/AllocationsConstraintProvider.java). I will work on fixing this when I have time (I am currently quite busy).
+Currently the level of coverage is fairly high at 90.4% statement coverage (the exception to this is some methods in the [`EmployeeSchedulingSystem`](src/main/java/com/roster123/employeescheduler/EmployeeSchedulingSystem.java) class, such as to load a file from an absolute path). However, there are still edge-cases left to write `JUnit` tests for, such as for different combinations of user-input errors being made simultaneously. More testing is needed for complex methods such as `Employee.addAvailabilities` and `Employee.availabilitiesFullyCoveringShiftTime` in the [`Employee`](src/main/java/com/roster123/employeescheduler/domain/Employee.java) class, and for the constraints in [`AllocationsConstraintProvider`](src/main/java/com/roster123/employeescheduler/solver/AllocationsConstraintProvider.java). I will work on fixing this when I have time (I am currently quite busy).
+
+Unit testing is needed for the helper methods of the `Employee.addAvailabilities` and `Employee.availabilitiesFullyCoveringShiftTime` methods in the [`Employee`](src/main/java/com/roster123/employeescheduler/domain/Employee.java) class.
+
+### 2.6 NOTE on Lack of Commit History
+
+There is a lack of commit history as I accidentally uploaded sensitive information in my private repository, so wasn't able to make that repo public. I always intend to have a staggered commit history, with small single-purpose commits to ensure full traceability. I would also use git branches if working within a team.
+
+### 2.7 NOTE on use of Reflection
+
+Some of the tests use reflection to access private fields, and run private methods. This is done because Optaplanner and OpenCsv use reflection through annotations to access and set private fields, so these private fields are actually part of the "interface" which needs to be tested - however I didn't want to expose these private fields/methods to the rest of my system (apart from OpenCsv and Optaplanner) to get as much data encapsulation as possible.
+
+I also used reflection to test some more complex private methods, without exposing these methods to the rest of my program.

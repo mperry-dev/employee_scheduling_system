@@ -28,30 +28,48 @@ In a complex example such as that in [`example 7`](CSVs_command_line/example7_co
 ## 3. Project RoadMap
 
 I plan to develop:
-* More tests
+* More tests, and polished up commenting
 * Add more detailed feedback to user when something goes wrong with the input data
 * Further constraints and functionality for adding incremental modifications to allocations when employees change their availability
     * These constraints need to prioritize making the fewest possible changes to the timetable
-    * Ideally, employees would be automatically emailed requesting they approve suggested changes to their allocation, or request no changes if the system suggests a new allocation layout
-* A full website (using [`Spring Boot`](https://spring.io/projects/spring-boot), [`Apache Isis`](http://isis.apache.org/)), Amazon Web Services, Docker, applicable Javascript libraries, and a PostgreSQL database, allowing:
+    * Ideally, employees would be automatically emailed requesting they approve suggested changes to their allocation, or request no changes if the system suggests a new allocation layout.
+* A full website (using [`Spring Boot`](https://spring.io/projects/spring-boot), [`Apache Isis`](http://isis.apache.org/)), Amazon Web Services (EC2, Elastic Beanstalk with load balancing, SES, Lambda, RDS), Docker, applicable Javascript libraries, reCAPTCHA, and a PostgreSQL database (Amazon RDS), allowing:
     * Setup of an account
     * Minimalistic uploading of CSV data (I'll probably use [dropzone.js](https://www.dropzonejs.com/))
     * Uploading/downloading of data and allocations
+    * Requesting to run the scheduler (will use AWS Lambda)
     * Tracking allocations across schedules for different projects by a manager
-    * Persistence of prior allocations in a database, allowing reverting of changes
+    * Persistence of prior allocations in a database (PostgreSQL Amazon RDS), allowing reverting of changes
     * Tweaking allocations and data via the GUI
     * Employees to request changes to their availabilities, and emailing employees who can take the shift/swap requesting they accept a proposed change
+        * I am likely to use [`Amazon SES`](https://aws.amazon.com/ses/pricing/) over options such as [`Mailgun API`](https://documentation.mailgun.com/en/latest/api_reference.html) or [`SMTP.com`](smtp.com) due to its significantly cheaper pricing.
+        * An alternative option may be using [`Microsoft Graph API`](https://docs.microsoft.com/en-us/graph/outlook-mail-concept-overview)
+        * Email verification can be performed using services such as [`Email List Verify`](https://www.emaillistverify.com/) or [`Bouncer`](https://www.usebouncer.com/). `Mailgun` has this feature built in but charges more per email. A free alternative may be [`Reacher`](https://help.reacher.email/self-host-guide) but may have licencing restrictions.
 
 Possible features could include:
-* A public REST API (not likely, as I don't plan to charge money for the service)
-* SMS notifications (not likely since these cost money, e.g. via [`Twilio`](https://www.twilio.com/sms))
+* A public REST API
+    * Would charge for the service, to cover costs
+    * JSON REST API with endpoints to:
+        * Upload employee information, employee availabilities, and shift information
+        * Upload modifications to the above information, and request rerunning of the scheduler to take into account modifications
+        * Request a rerun of the scheduler for a particular length of time
+        * Downloading of all data
+* SMS notifications
+    * Could use [`Twilio`](https://www.twilio.com/sms) API
+    * Would come with a paid version of the service, to cover costs
+    * Would cover all notifications implemented by email in the free version
+    * Could allow 2FA
+
+Possible integrations could include:
+* Slack/Monday.com - a plugin to create a schedule, using the backend scheduler. Would allow running of commands, including to upload data/create a schedule from all employees in the workspace or a list of employees, and to download this schedule in a CSV file
+* Workday/MYOB/Xero - integration with payroll&workforce management services, so employees can immediately be onboarded and processed upon a schedule being created and accepted, and so that if shifts are dropped and then rearranged by the system this is reflected
 
 ## 4. CS Theory/Programming skills demonstrated in the Project
 
 * OOP design principles
 * Testing - automated [`JUnit unit testing`](https://junit.org/junit5/), `property based testing`, [`quickcheck`](https://github.com/pholser/junit-quickcheck) (randomized property based testing)
 * `Test-driven development` (I could have improved here, I didn't follow it rigorously as my design changed frequently as I am new to [`OptaPlanner`](https://www.optaplanner.org/))
-* Data Structures & Algorithms - consider the methods `Employee.addAvailabilities` and `Employee.availabilitiesFullyCoveringShiftTime` in [`Employee.java`](src/employeeschedulingsystem/Employee.java)
+* Data Structures & Algorithms - consider the methods `Employee.addAvailabilities` and `Employee.availabilitiesFullyCoveringShiftTime` in [`Employee.java`](src/main/java/com/roster123/employeescheduler/domain/Employee.java)
 * `Constraint programming`
 * Java
 * Gradle
