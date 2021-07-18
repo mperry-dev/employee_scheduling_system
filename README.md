@@ -45,7 +45,8 @@ I plan to develop:
         * I am likely to use [`Amazon SES`](https://aws.amazon.com/ses/pricing/) over options such as [`Mailgun API`](https://documentation.mailgun.com/en/latest/api_reference.html) or [`SMTP.com`](https://smtp.com) due to its significantly cheaper pricing.
         * An alternative option may be using [`Microsoft Graph API`](https://docs.microsoft.com/en-us/graph/outlook-mail-concept-overview)
         * Email verification can be performed using services such as [`Email List Verify`](https://www.emaillistverify.com/) or [`Bouncer`](https://www.usebouncer.com/). `Mailgun` has this feature built in but charges more per email. A free alternative may be [`Reacher`](https://help.reacher.email/self-host-guide) but may have licencing restrictions.
-* An Android/iPhone app allowing employees to manage their availability, and managers to manage shifts
+* An Android/iPhone app allowing employees to manage their availability and personal information, and managers to manage shifts
+    * This could further provide value by triggering push notifications upon a shift being changed/offered for an employee, or employee availabilities changing for a manager. This would allow convenient notification of important events on the mobile device without paying for expensive mobile SMS charges.
 
 Possible features could include:
 * A public REST API
