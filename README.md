@@ -42,7 +42,7 @@ I plan to develop:
     * Persistence of prior allocations in a database (PostgreSQL Amazon RDS), allowing reverting of changes
     * Tweaking allocations and data via the GUI
     * Employees to request changes to their availabilities, and emailing employees who can take the shift/swap requesting they accept a proposed change
-        * I am likely to use [`Amazon SES`](https://aws.amazon.com/ses/pricing/) over options such as [`Mailgun API`](https://documentation.mailgun.com/en/latest/api_reference.html) or [`SMTP.com`](smtp.com) due to its significantly cheaper pricing.
+        * I am likely to use [`Amazon SES`](https://aws.amazon.com/ses/pricing/) over options such as [`Mailgun API`](https://documentation.mailgun.com/en/latest/api_reference.html) or [`SMTP.com`](https://smtp.com) due to its significantly cheaper pricing.
         * An alternative option may be using [`Microsoft Graph API`](https://docs.microsoft.com/en-us/graph/outlook-mail-concept-overview)
         * Email verification can be performed using services such as [`Email List Verify`](https://www.emaillistverify.com/) or [`Bouncer`](https://www.usebouncer.com/). `Mailgun` has this feature built in but charges more per email. A free alternative may be [`Reacher`](https://help.reacher.email/self-host-guide) but may have licencing restrictions.
 
