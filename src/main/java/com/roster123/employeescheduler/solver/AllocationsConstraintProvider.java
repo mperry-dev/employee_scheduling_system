@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
+import java.util.function.Predicate;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,7 +65,7 @@ public class AllocationsConstraintProvider implements ConstraintProvider {
         // select all shifts...
         return constraintFactory.from(Shift.class)
             // where the employee cannot do the shift
-            .filter((s) -> (!s.shiftEmployeeCanDoTime()))
+            .filter(Predicate.not(Shift::shiftEmployeeCanDoTime))
             .penalize("Employee availability conflict", HardMediumSoftScore.ONE_HARD);
     }
 
@@ -91,7 +93,7 @@ public class AllocationsConstraintProvider implements ConstraintProvider {
         // select all shifts
         return constraintFactory.from(Shift.class)
             // where the employee cannot do the shift type during the times
-            .filter((s) -> (!s.shiftEmployeeCanDoType()))
+            .filter(Predicate.not(Shift::shiftEmployeeCanDoType))
             // penalize a point for every instance of the rule being broken
             .penalize("Employee availability (type) conflict", HardMediumSoftScore.ONE_HARD);
     }
@@ -118,7 +120,7 @@ public class AllocationsConstraintProvider implements ConstraintProvider {
             // https://docs.optaplanner.org/7.28.0.Final/optaplanner-javadoc/org/optaplanner/core/api/score/stream/bi/BiConstraintStream.html
             // https://docs.optaplanner.org/7.33.0.Final/optaplanner-javadoc/org/optaplanner/core/api/score/stream/ConstraintCollectors.html
             // https://stackoverflow.com/questions/62515805/optaplanner-constraint-streams-groupby
-            .groupBy((s) -> s.getEmployee(),
+            .groupBy(Shift::getEmployee,
                 // getStartEndWeekInfoPack maps shift to the corresponding information about start and end week week numbers/week years
                 ConstraintCollectors.sum((s) -> s.getStartEndWeekInfoPack(),
                     // "zero" is an empty table that will be built up
@@ -147,9 +149,9 @@ public class AllocationsConstraintProvider implements ConstraintProvider {
     public Constraint employeeMinimumWeeklyShifts(ConstraintFactory constraintFactory){
         // select the allocations class
         return constraintFactory.from(Shift.class)
-            .groupBy((s) -> s.getEmployee(),
+            .groupBy(Shift::getEmployee,
                 // getStartEndWeekInfoPack maps shift to the corresponding information about start and end week week numbers/week years
-                ConstraintCollectors.sum((s) -> s.getStartEndWeekInfoPack(),
+                ConstraintCollectors.sum(Shift::getStartEndWeekInfoPack,
                     // "zero" is an empty table that will be built up
                     getEmptyTable(),
                     // adder adds the tables (increasing count where overlap)
@@ -180,9 +182,9 @@ public class AllocationsConstraintProvider implements ConstraintProvider {
             // group by the employees (can't group yet by day because start and end could be different)
             // pair the employees with their list of datetimes
             // use pair of datetime rather than interval since intervals are equal based on duration for jodatime
-            .groupBy((s)->s.getEmployee(),
+            .groupBy(Shift::getEmployee,
                 ConstraintCollectors.sum(
-                    s->s.getListWithStartEndPair(),
+                    Shift::getListWithStartEndPair,
                     new LinkedList<Pair<DateTime, DateTime>>(),
                     // take the lists and add them
                     (l1, l2) -> new LinkedList<>(ListUtils.union(l1, l2)),
