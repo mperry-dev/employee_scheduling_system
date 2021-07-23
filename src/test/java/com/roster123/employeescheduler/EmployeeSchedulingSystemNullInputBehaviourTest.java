@@ -49,7 +49,7 @@ public class EmployeeSchedulingSystemNullInputBehaviourTest {
         employeeSchedulingSystem.processEmployeeInformationCsv(
             "employeeId,name,mobile,email\n"+
             "cat124,,+61400578922,someemail2@email.com\n");
-        Employee employee = ((List<Employee>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "employees"))).get(0);
+        Employee employee = ClassMemberExposer.<List<Employee>>getFieldValueByName(employeeSchedulingSystem, "employees").get(0);
         assertEquals("", employee.getName());
     }
 
@@ -58,7 +58,7 @@ public class EmployeeSchedulingSystemNullInputBehaviourTest {
         employeeSchedulingSystem.processEmployeeInformationCsv(
             "employeeId,name,mobile,email\n"+
             "cat124,Bob Smith,,someemail2@email.com\n");
-        Employee employee = ((List<Employee>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "employees"))).get(0);
+        Employee employee = ClassMemberExposer.<List<Employee>>getFieldValueByName(employeeSchedulingSystem, "employees").get(0);
         assertNull(employee.getMobile());
     }
 
@@ -67,7 +67,7 @@ public class EmployeeSchedulingSystemNullInputBehaviourTest {
         employeeSchedulingSystem.processEmployeeInformationCsv(
             "employeeId,name,email\n"+
             "cat124,Bob Smith,someemail2@email.com\n");
-        Employee employee = ((List<Employee>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "employees"))).get(0);
+        Employee employee = ClassMemberExposer.<List<Employee>>getFieldValueByName(employeeSchedulingSystem, "employees").get(0);
         assertNull(employee.getMobile());
     }
 

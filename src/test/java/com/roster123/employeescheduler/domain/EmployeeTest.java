@@ -104,7 +104,7 @@ public class EmployeeTest {
             new Availability(new HashSet<>(Arrays.asList("in-person")), new DateTime(2021, 7, 11, 10, 55), new DateTime(2021, 7, 11, 11, 0))
         ));
 
-        List<Availability> availabilitiesInEmployee = (List<Availability>)(ClassMemberExposer.getFieldValueByName(employee, "availabilities"));
+        List<Availability> availabilitiesInEmployee = ClassMemberExposer.<List<Availability>>getFieldValueByName(employee, "availabilities");
         // check all elements appear at same frequency for both (order irrelevant)
         for (Availability av: ListUtils.union(expectedAvailabilities, availabilitiesInEmployee)) {
             assertEquals(Collections.frequency(expectedAvailabilities, av), Collections.frequency(availabilitiesInEmployee, av));
@@ -129,7 +129,7 @@ public class EmployeeTest {
             new Availability(new HashSet<>(Arrays.asList("online")), new DateTime(2021, 7, 9, 10, 11), new DateTime(2021, 7, 9, 10, 12))
         ));
 
-        List<Availability> availabilitiesInEmployee = (List<Availability>)(ClassMemberExposer.getFieldValueByName(employee, "availabilities"));
+        List<Availability> availabilitiesInEmployee = ClassMemberExposer.<List<Availability>>getFieldValueByName(employee, "availabilities");
         // check all elements appear at same frequency for both (order irrelevant)
         for (Availability av: ListUtils.union(expectedAvailabilities, availabilitiesInEmployee)) {
             assertEquals(Collections.frequency(expectedAvailabilities, av), Collections.frequency(availabilitiesInEmployee, av));
@@ -165,7 +165,7 @@ public class EmployeeTest {
         AvailabilityLoader av1 = new AvailabilityLoader("employee1", "online", new DateTime(2021, 7, 11, 12, 0), new DateTime(2021, 7, 11, 13, 0));
         employee.addAvailability(av0);
         employee.addAvailability(av1);
-        List<Availability> availabilitiesInEmployee = (List<Availability>)(ClassMemberExposer.getFieldValueByName(employee, "availabilities"));
+        List<Availability> availabilitiesInEmployee = ClassMemberExposer.<List<Availability>>getFieldValueByName(employee, "availabilities");
         List<Availability> expectedAvailabilities = new ArrayList<>(Arrays.asList(
             new Availability(new HashSet<>(Arrays.asList("online")), new DateTime(2021, 7, 11, 9, 0), new DateTime(2021, 7, 11, 13, 0))
         ));

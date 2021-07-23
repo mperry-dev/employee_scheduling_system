@@ -46,7 +46,7 @@ public class EmployeeSchedulingSystemTest {
             "employeeId,name,mobile,email\n"+
             "cat123,Bob Smith,+61400578921,someemail@email.com\n"+
             "cat124,John Smith,+61400578922,someemail2@email.com\n");
-        List<Employee> employees = (List<Employee>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "employees"));
+        List<Employee> employees = ClassMemberExposer.<List<Employee>>getFieldValueByName(employeeSchedulingSystem, "employees");
 
         assertArrayEquals(new Employee[]{
             new Employee("cat123", "Bob Smith", "+61400578921", "someemail@email.com", 0, null, 0),
@@ -69,7 +69,7 @@ public class EmployeeSchedulingSystemTest {
         Employee employee2 = new Employee("cat124", "John Smith", "+61400578922", "someemail2@email.com", 0, null, 0);
         employee1.addAvailability(new AvailabilityLoader("cat123", null, new DateTime(2021, 7, 3, 9, 0), new DateTime(2021, 7, 3, 21, 0)));
         employee2.addAvailability(new AvailabilityLoader("cat124", null, new DateTime(2021, 1, 30, 3, 0), new DateTime(2021, 2, 6, 21, 0)));
-        List<Employee> employees = (List<Employee>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "employees"));
+        List<Employee> employees = ClassMemberExposer.<List<Employee>>getFieldValueByName(employeeSchedulingSystem, "employees");
         assertArrayEquals(new Employee[]{employee1, employee2}, employees.toArray());
     }
 
@@ -83,9 +83,9 @@ public class EmployeeSchedulingSystemTest {
             "cat123,,03/07/2021 09:00,03/07/2021 21:00,online\n"+
             "cat123,,03/07/2021 11:00,03/07/2021 20:00,in-person\n");
 
-        List<Employee> employees = (List<Employee>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "employees"));
+        List<Employee> employees = ClassMemberExposer.<List<Employee>>getFieldValueByName(employeeSchedulingSystem, "employees");
         Employee employee = employees.get(0);
-        List<Availability> availabilities = (List<Availability>)(ClassMemberExposer.getFieldValueByName(employee, "availabilities"));
+        List<Availability> availabilities = ClassMemberExposer.<List<Availability>>getFieldValueByName(employee, "availabilities");
 
         Availability[] expectedAvailabilities = new Availability[]{
             new Availability(new HashSet<>(Arrays.asList("online")), new DateTime(2021, 7, 3, 9, 0), new DateTime(2021, 7, 3, 11, 0)),
@@ -105,9 +105,9 @@ public class EmployeeSchedulingSystemTest {
             "cat123,,03/07/2021 09:00,03/07/2021 21:00,online\n"+
             "cat123,,03/07/2021 11:00,03/07/2021 20:00,online\n");
 
-        List<Employee> employees = (List<Employee>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "employees"));
+        List<Employee> employees = ClassMemberExposer.<List<Employee>>getFieldValueByName(employeeSchedulingSystem, "employees");
         Employee employee = employees.get(0);
-        List<Availability> availabilities = (List<Availability>)(ClassMemberExposer.getFieldValueByName(employee, "availabilities"));
+        List<Availability> availabilities = ClassMemberExposer.<List<Availability>>getFieldValueByName(employee, "availabilities");
 
         Availability[] expectedAvailabilities = new Availability[]{
             new Availability(new HashSet<>(Arrays.asList("online")), new DateTime(2021, 7, 3, 9, 0), new DateTime(2021, 7, 3, 21, 0))};
@@ -124,10 +124,10 @@ public class EmployeeSchedulingSystemTest {
             "cat123,,03/07/2021 09:00,03/07/2021 21:00,online\n"+
             "cat123,,03/07/2021 11:00,03/07/2021 20:00,online\n");
 
-        List<Employee> employees = (List<Employee>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "employees"));
+        List<Employee> employees = ClassMemberExposer.<List<Employee>>getFieldValueByName(employeeSchedulingSystem, "employees");
         Employee employee = employees.get(0);
         Shift suggestedShift = new Shift("shift123", "online", new DateTime(2021, 7, 3, 9, 0), new DateTime(2021, 7, 3, 21, 0));
-        List<Availability> availabilitiesCoveringShiftTime = (List<Availability>)ClassMemberExposer.genericInvokeMethod(employee, "availabilitiesFullyCoveringShiftTime", suggestedShift);
+        List<Availability> availabilitiesCoveringShiftTime = ClassMemberExposer.<List<Availability>>genericInvokeMethod(employee, "availabilitiesFullyCoveringShiftTime", suggestedShift);
         Availability[] expectedAvailabilities = new Availability[]{
             new Availability(new HashSet<>(Arrays.asList("online")), new DateTime(2021, 7, 3, 9, 0), new DateTime(2021, 7, 3, 21, 0))};
         assertArrayEquals(expectedAvailabilities, availabilitiesCoveringShiftTime.toArray());
@@ -143,10 +143,10 @@ public class EmployeeSchedulingSystemTest {
             "cat123,,03/07/2021 09:00,03/07/2021 21:00,online\n"+
             "cat123,,03/07/2021 11:00,03/07/2021 20:00,online\n");
 
-        List<Employee> employees = (List<Employee>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "employees"));
+        List<Employee> employees = ClassMemberExposer.<List<Employee>>getFieldValueByName(employeeSchedulingSystem, "employees");
         Employee employee = employees.get(0);
         Shift suggestedShift = new Shift("shift123", "online", new DateTime(2021, 7, 3, 9, 0), new DateTime(2021, 7, 3, 22, 0));
-        List<Availability> availabilitiesCoveringShiftTime = (List<Availability>)ClassMemberExposer.genericInvokeMethod(employee, "availabilitiesFullyCoveringShiftTime", suggestedShift);
+        List<Availability> availabilitiesCoveringShiftTime = ClassMemberExposer.<List<Availability>>genericInvokeMethod(employee, "availabilitiesFullyCoveringShiftTime", suggestedShift);
 
         assertNull(availabilitiesCoveringShiftTime);
     }
@@ -161,7 +161,7 @@ public class EmployeeSchedulingSystemTest {
             "cat123,,03/07/2021 09:00,03/07/2021 21:00,online\n"+
             "cat123,,03/07/2021 11:00,03/07/2021 20:00,online\n");
 
-        List<Employee> employees = (List<Employee>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "employees"));
+        List<Employee> employees = ClassMemberExposer.<List<Employee>>getFieldValueByName(employeeSchedulingSystem, "employees");
         Employee employee = employees.get(0);
         Shift suggestedShift = new Shift("shift123", "in-person", new DateTime(2021, 7, 3, 9, 0), new DateTime(2021, 7, 3, 21, 0));
         assertFalse(employee.canPerformShiftByType(suggestedShift));
@@ -177,7 +177,7 @@ public class EmployeeSchedulingSystemTest {
             "cat123,,03/07/2021 09:00,03/07/2021 21:00,online\n"+
             "cat123,,03/07/2021 11:00,03/07/2021 20:00,online\n");
 
-        List<Employee> employees = (List<Employee>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "employees"));
+        List<Employee> employees = ClassMemberExposer.<List<Employee>>getFieldValueByName(employeeSchedulingSystem, "employees");
         Employee employee = employees.get(0);
         Shift suggestedShift = new Shift("shift123", "online", new DateTime(2021, 7, 3, 9, 0), new DateTime(2021, 7, 3, 21, 0));
         assertTrue(employee.canPerformShiftByType(suggestedShift));
@@ -191,7 +191,7 @@ public class EmployeeSchedulingSystemTest {
 
             "employeeId,type,start,end\n"+
             "cat123,,30/01/2021 03:00,06/02/2021 21:00\n");
-        List<Employee> employees = (List<Employee>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "employees"));
+        List<Employee> employees = ClassMemberExposer.<List<Employee>>getFieldValueByName(employeeSchedulingSystem, "employees");
 
         AvailabilityLoader loader = new AvailabilityLoader("cat123", null, new DateTime(2021, 1, 30, 3, 0), new DateTime(2021, 2, 6, 21, 0));
         Employee employee = new Employee("cat123", "Bob Smith", null, "someemail@email.com", 0, null, 0);
@@ -208,7 +208,7 @@ public class EmployeeSchedulingSystemTest {
 
             "employeeId,type,start,end\n"+
             "cat123,,30/01/2021 03:00,06/02/2021 21:00\n");
-        List<Employee> employees = (List<Employee>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "employees"));
+        List<Employee> employees = ClassMemberExposer.<List<Employee>>getFieldValueByName(employeeSchedulingSystem, "employees");
 
         AvailabilityLoader loader = new AvailabilityLoader("cat123", null, new DateTime(2021, 1, 30, 3, 0), new DateTime(2021, 2, 6, 21, 0));
         Employee employee = new Employee("cat123", "Bob Smith", null, "someemail@email.com", 0, null, 0);
@@ -236,7 +236,7 @@ public class EmployeeSchedulingSystemTest {
         Shift newShift = new Shift("shift123", "online", new DateTime(2021, 7, 3, 9, 0), new DateTime(2021, 7, 3, 12, 0));
         ClassMemberExposer.setFieldValueByName(newShift, "employee", employee);
         employeeSchedulingSystem.allocateShifts(10L);
-        List<Shift> shifts = (List<Shift>)(ClassMemberExposer.getFieldValueByName(employeeSchedulingSystem, "allocatedShifts"));
+        List<Shift> shifts = ClassMemberExposer.<List<Shift>>getFieldValueByName(employeeSchedulingSystem, "allocatedShifts");
         assertArrayEquals(new Shift[]{newShift}, shifts.toArray());
     }
 

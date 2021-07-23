@@ -14,19 +14,20 @@ import java.lang.reflect.Method;
 public class ClassMemberExposer {
     /**
      * get a field value by name
-     * @param e
-     * @param fieldName
-     * @return
+     * @param <E> the type of the field
+     * @param obj object we want to get the field from
+     * @param fieldName the name of the field we require
+     * @return the value of the field
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
      */
-    public static Object getFieldValueByName(Object obj, String fieldName) throws IllegalArgumentException, IllegalAccessException{
+    public static <E> E getFieldValueByName(Object obj, String fieldName) throws IllegalArgumentException, IllegalAccessException{
         // https://en.wikibooks.org/wiki/Java_Programming/Reflection/Accessing_Private_Features_with_Reflection
         Field fields[] = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
             if (field.getName().equals(fieldName)){
                 field.setAccessible(true);
-                return field.get(obj);
+                return (E)field.get(obj);
             }
         }
         return null;
@@ -54,6 +55,7 @@ public class ClassMemberExposer {
 
     /**
      * generic way to invoke a non-visible method, and return it's returned value (if the method returns void, this will return null)
+     * @param <E> the return type of the method
      * @param obj object we want to run the method for
      * @param methodName the name of the method to run
      * @param params the arguments to the method we wish to run
@@ -64,7 +66,7 @@ public class ClassMemberExposer {
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
      */
-    public static Object genericInvokeMethod(Object obj, String methodName, Object... params) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static <E> E genericInvokeMethod(Object obj, String methodName, Object... params) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         // from https://stackoverflow.com/a/18909973
         int paramCount = params.length;
         Method method;
@@ -74,6 +76,6 @@ public class ClassMemberExposer {
         }
         method = obj.getClass().getDeclaredMethod(methodName, classArray);
         method.setAccessible(true);
-        return method.invoke(obj, params);
+        return (E)method.invoke(obj, params);
     }
 }

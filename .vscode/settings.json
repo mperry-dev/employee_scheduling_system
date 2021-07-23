@@ -6,6 +6,6 @@
         "src/main/java"
     ],
     "java.project.referencedLibraries": [
-        "lib/*.jar",
+        "lib/*.jar"
     ]
 }
